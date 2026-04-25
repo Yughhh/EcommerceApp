@@ -71,9 +71,9 @@
             {% if product.in_stock %}
             <form action="{% url 'cart:add' product.id %}" method="post" class="d-flex gap-3 align-items-center mb-4">
                 {% csrf_token %}
-                <div class="input-group" style="width:130px">
+                <div class="input-group flex-nowrap" style="width:120px">
                     <button type="button" class="btn btn-outline-secondary" onclick="changeQty(-1)">-</button>
-                    <input type="number" name="quantity" id="qty" value="1" min="1" max="{{ product.stock }}" class="form-control text-center">
+                    <input type="number" name="quantity" id="qty" value="1" min="1" max="{{ product.stock }}" class="form-control text-center px-1">
                     <button type="button" class="btn btn-outline-secondary" onclick="changeQty(1)">+</button>
                 </div>
                 <button type="submit" class="btn btn-primary btn-lg px-5">
