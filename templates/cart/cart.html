@@ -11,33 +11,59 @@
             <div class="card">
                 <div class="card-body p-0">
                     {% for item in cart.items.all %}
-                    <div class="d-flex align-items-center p-4 border-bottom">
-                        {% if item.product.image %}
-                        <img src="{{ item.product.image.url }}" style="width:80px;height:80px;object-fit:cover;border-radius:10px" alt="{{ item.product.name }}">
-                        {% else %}
-                        <div class="bg-light rounded d-flex align-items-center justify-content-center" style="width:80px;height:80px">
-                            <i class="fas fa-image fa-2x text-muted"></i>
-                        </div>
-                        {% endif %}
-                        <div class="ms-3 flex-grow-1">
-                            <h6 class="fw-bold mb-1">
-                                <a href="{% url 'store:product_detail' item.product.slug %}" class="text-dark text-decoration-none">{{ item.product.name }}</a>
-                            </h6>
-                            <small class="text-muted">₹{{ item.product.final_price }} each</small>
-                        </div>
-                        <div class="d-flex align-items-center gap-3">
-                            <form action="{% url 'cart:update' item.id %}" method="post" class="d-flex align-items-center">
-                                {% csrf_token %}
-                                <div class="input-group flex-nowrap" style="width:105px">
-                                    <button type="submit" name="quantity" value="{{ item.quantity|add:'-1' }}" class="btn btn-outline-secondary btn-sm">-</button>
-                                    <span class="form-control text-center px-1" style="min-width: 40px;">{{ item.quantity }}</span>
-                                    <button type="submit" name="quantity" value="{{ item.quantity|add:'1' }}" class="btn btn-outline-secondary btn-sm">+</button>
+                    <div class="p-4 border-bottom">
+                        <div class="row align-items-center g-3">
+                            <!-- Product Image & Name -->
+                            <div class="col-12 col-md-5">
+                                <div class="d-flex align-items-center">
+                                    {% if item.product.image %}
+                                    <img src="{{ item.product.image.url }}" class="rounded shadow-sm" style="width:80px;height:80px;object-fit:cover" alt="{{ item.product.name }}">
+                                    {% else %}
+                                    <div class="bg-light rounded d-flex align-items-center justify-content-center shadow-sm" style="width:80px;height:80px">
+                                        <i class="fas fa-image fa-2x text-muted"></i>
+                                    </div>
+                                    {% endif %}
+                                    <div class="ms-3">
+                                        <h6 class="fw-bold mb-1">
+                                            <a href="{% url 'store:product_detail' item.product.slug %}" class="text-dark text-decoration-none">{{ item.product.name }}</a>
+                                        </h6>
+                                        <small class="text-muted d-block">₹{{ item.product.final_price }} each</small>
+                                    </div>
                                 </div>
-                            </form>
-                            <span class="fw-bold text-primary" style="min-width:80px;text-align:right">₹{{ item.total_price }}</span>
-                            <a href="{% url 'cart:remove' item.id %}" class="btn btn-outline-danger btn-sm" onclick="return confirm('Remove this item?')">
-                                <i class="fas fa-trash"></i>
-                            </a>
+                            </div>
+
+                            <!-- Quantity & Price Controls -->
+                            <div class="col-12 col-md-7">
+                                <div class="row align-items-center g-2 g-md-4">
+                                    <!-- Quantity -->
+                                    <div class="col-auto ms-md-auto">
+                                        <form action="{% url 'cart:update' item.id %}" method="post" class="m-0">
+                                            {% csrf_token %}
+                                            <div class="input-group shadow-sm" style="width: 125px;">
+                                                <button type="submit" name="quantity" value="{{ item.quantity|add:'-1' }}" class="btn btn-outline-secondary btn-sm px-2">
+                                                    <i class="fas fa-minus"></i>
+                                                </button>
+                                                <span class="form-control form-control-sm text-center fw-bold bg-white" style="min-width: 45px;">{{ item.quantity }}</span>
+                                                <button type="submit" name="quantity" value="{{ item.quantity|add:'1' }}" class="btn btn-outline-secondary btn-sm px-2">
+                                                    <i class="fas fa-plus"></i>
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                    <!-- Total Price -->
+                                    <div class="col col-md-auto text-end" style="min-width: 130px;">
+                                        <span class="fw-bold text-primary fs-5">₹{{ item.total_price }}</span>
+                                    </div>
+
+                                    <!-- Remove -->
+                                    <div class="col-auto">
+                                        <a href="{% url 'cart:remove' item.id %}" class="btn btn-sm btn-outline-danger border-0" onclick="return confirm('Remove this item?')">
+                                            <i class="fas fa-trash-alt fs-5"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     {% endfor %}
